@@ -259,8 +259,8 @@ module Fluent
         # Forward
         es = Fluent::MultiEventStream.new
         entries.each {|e|
-          time = e[0].to_i
-          time = (now ||= Fluent::Engine.now) if time == 0
+          time = e[0]
+          time = (now ||= Fluent::Engine.now) if time.to_i == 0
           record = e[1]
           es.add(time, record)
         }
@@ -269,7 +269,7 @@ module Fluent
       else
         # Message
         time = msg[1]
-        time = Fluent::Engine.now if time == 0
+        time = Fluent::Engine.now if time.to_i == 0
         record = msg[2]
         Fluent::Engine.emit(tag, time, record)
       end
